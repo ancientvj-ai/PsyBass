@@ -12,7 +12,7 @@ namespace
 
     //                      wave  sub  oct  cutoff reso slope envamt decay rel  width drive glide atk  vol  roll
     const Preset kPresets[] = {
-        { "Psy Rolling",     { 0.0f, 0.35f, 0, 180.f, 0.25f, 1, 3.5f,  90.f, 25.f, 0.10f, 0.25f, 0.f, 1.f, 0.70f, 2 } },
+        { "Ancient Rolling",     { 0.0f, 0.35f, 0, 180.f, 0.25f, 1, 3.5f,  90.f, 25.f, 0.10f, 0.25f, 0.f, 1.f, 0.70f, 2 } },
         { "Full-On Offbeat", { 0.2f, 0.30f, 0, 220.f, 0.30f, 0, 3.9f, 140.f, 30.f, 0.15f, 0.20f, 0.f, 1.f, 0.70f, 1 } },
         { "Dark Growl",      { 0.6f, 0.20f, 0, 260.f, 0.55f, 1, 4.5f,  70.f, 20.f, 0.30f, 0.55f, 0.f, 1.f, 0.65f, 2 } },
         { "Sub Punch (Free)",{ 0.0f, 0.90f, 0, 120.f, 0.10f, 1, 2.0f, 200.f, 60.f, 0.00f, 0.10f, 0.f, 1.f, 0.75f, 0 } },
@@ -30,7 +30,7 @@ namespace
 
 using Param = juce::AudioProcessorValueTreeState;
 
-juce::AudioProcessorValueTreeState::ParameterLayout PsyBassProcessor::createLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout AncientBassProcessor::createLayout()
 {
     using namespace juce;
     std::vector<std::unique_ptr<RangedAudioParameter>> p;
@@ -54,7 +54,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PsyBassProcessor::createLayo
     return { p.begin(), p.end() };
 }
 
-PsyBassProcessor::PsyBassProcessor()
+AncientBassProcessor::AncientBassProcessor()
     : AudioProcessor (BusesProperties().withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
       apvts (*this, nullptr, "PARAMS", createLayout())
 {
@@ -75,7 +75,7 @@ PsyBassProcessor::PsyBassProcessor()
     pRoll    = apvts.getRawParameterValue ("roll");
 }
 
-void PsyBassProcessor::prepareToPlay (double sampleRate, int)
+void AncientBassProcessor::prepareToPlay (double sampleRate, int)
 {
     sr = sampleRate;
     volumeSmooth.reset (sr, 0.02);
@@ -86,12 +86,12 @@ void PsyBassProcessor::prepareToPlay (double sampleRate, int)
     freeRunPpq = 0.0;
 }
 
-bool PsyBassProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool AncientBassProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 }
 
-void PsyBassProcessor::handleMidi (const juce::MidiMessage& m)
+void AncientBassProcessor::handleMidi (const juce::MidiMessage& m)
 {
     if (m.isNoteOn())
     {
@@ -121,7 +121,7 @@ void PsyBassProcessor::handleMidi (const juce::MidiMessage& m)
     }
 }
 
-void PsyBassProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi)
+void AncientBassProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi)
 {
     juce::ScopedNoDenormals noDenormals;
     const int numSamples = buffer.getNumSamples();
@@ -277,13 +277,13 @@ void PsyBassProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
 }
 
 // ---------------- presets ----------------
-int PsyBassProcessor::getNumPrograms() { return kNumPresets; }
-const juce::String PsyBassProcessor::getProgramName (int index)
+int AncientBassProcessor::getNumPrograms() { return kNumPresets; }
+const juce::String AncientBassProcessor::getProgramName (int index)
 {
     return juce::isPositiveAndBelow (index, kNumPresets) ? juce::String (kPresets[index].name) : juce::String();
 }
 
-void PsyBassProcessor::setCurrentProgram (int index)
+void AncientBassProcessor::setCurrentProgram (int index)
 {
     if (! juce::isPositiveAndBelow (index, kNumPresets)) return;
     currentProgram = index;
@@ -293,19 +293,19 @@ void PsyBassProcessor::setCurrentProgram (int index)
 }
 
 // ---------------- estado ----------------
-void PsyBassProcessor::getStateInformation (juce::MemoryBlock& destData)
+void AncientBassProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     if (auto xml = apvts.copyState().createXml())
         copyXmlToBinary (*xml, destData);
 }
 
-void PsyBassProcessor::setStateInformation (const void* data, int size)
+void AncientBassProcessor::setStateInformation (const void* data, int size)
 {
     if (auto xml = getXmlFromBinary (data, size))
         if (xml->hasTagName (apvts.state.getType()))
             apvts.replaceState (juce::ValueTree::fromXml (*xml));
 }
 
-juce::AudioProcessorEditor* PsyBassProcessor::createEditor() { return new PsyBassEditor (*this); }
+juce::AudioProcessorEditor* AncientBassProcessor::createEditor() { return new AncientBassEditor (*this); }
 
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new PsyBassProcessor(); }
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new AncientBassProcessor(); }

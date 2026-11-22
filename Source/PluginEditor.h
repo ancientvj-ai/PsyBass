@@ -3,10 +3,10 @@
 #include "PluginProcessor.h"
 
 // ---------- visual dos knobs ----------
-class PsyLookAndFeel : public juce::LookAndFeel_V4
+class AncientLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-    PsyLookAndFeel();
+    AncientLookAndFeel();
     void drawRotarySlider (juce::Graphics&, int x, int y, int w, int h, float pos,
                            float startAngle, float endAngle, juce::Slider&) override;
 };
@@ -42,11 +42,11 @@ private:
 };
 
 // ---------- editor ----------
-class PsyBassEditor : public juce::AudioProcessorEditor
+class AncientBassEditor : public juce::AudioProcessorEditor
 {
 public:
-    explicit PsyBassEditor (PsyBassProcessor&);
-    ~PsyBassEditor() override = default;
+    explicit AncientBassEditor (AncientBassProcessor&);
+    ~AncientBassEditor() override = default;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -60,8 +60,8 @@ private:
         juce::Rectangle<int> bounds;
     };
 
-    PsyBassProcessor& processor;
-    PsyLookAndFeel lnf;
+    AncientBassProcessor& processor;
+    AncientLookAndFeel lnf;
 
     std::vector<std::unique_ptr<juce::Component>> widgets;
     std::vector<Panel> panels;
@@ -80,5 +80,5 @@ private:
         return raw;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PsyBassEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AncientBassEditor)
 };

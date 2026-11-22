@@ -2,13 +2,13 @@
 
 namespace
 {
-    const juce::Colour cCyan   { 0xff22d3ee };
-    const juce::Colour cPink   { 0xffff3d9a };
-    const juce::Colour cGreen  { 0xffa3e635 };
-    const juce::Colour cPurple { 0xffc084fc };
-    const juce::Colour cOrange { 0xfffb923c };
-    const juce::Colour cBg     { 0xff0b0d17 };
-    const juce::Colour cPanel  { 0xff12162a };
+    const juce::Colour cCyan   { 0xff86efac };
+    const juce::Colour cPink   { 0xff22c55e };
+    const juce::Colour cGreen  { 0xffbef264 };
+    const juce::Colour cPurple { 0xff2dd4bf };
+    const juce::Colour cOrange { 0xff10b981 };
+    const juce::Colour cBg     { 0xff060f0a };
+    const juce::Colour cPanel  { 0xff0c1a13 };
 
     constexpr int slotW = 76, panelPad = 8, panelGap = 8, margin = 14, headerH = 64, bodyH = 150, titleH = 26;
 
@@ -28,18 +28,18 @@ namespace
 }
 
 // ================= Look and feel =================
-PsyLookAndFeel::PsyLookAndFeel()
+AncientLookAndFeel::AncientLookAndFeel()
 {
-    setColour (juce::ComboBox::backgroundColourId, juce::Colour (0xff1b1f36));
+    setColour (juce::ComboBox::backgroundColourId, juce::Colour (0xff11241b));
     setColour (juce::ComboBox::textColourId, juce::Colours::white);
-    setColour (juce::ComboBox::outlineColourId, juce::Colour (0xff2e3454));
+    setColour (juce::ComboBox::outlineColourId, juce::Colour (0xff2a4a3a));
     setColour (juce::ComboBox::arrowColourId, cCyan);
-    setColour (juce::PopupMenu::backgroundColourId, juce::Colour (0xff1b1f36));
+    setColour (juce::PopupMenu::backgroundColourId, juce::Colour (0xff11241b));
     setColour (juce::PopupMenu::textColourId, juce::Colours::white);
     setColour (juce::PopupMenu::highlightedBackgroundColourId, cCyan.withAlpha (0.3f));
 }
 
-void PsyLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int w, int h, float pos,
+void AncientLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int w, int h, float pos,
                                        float startAngle, float endAngle, juce::Slider& s)
 {
     auto bounds = juce::Rectangle<float> ((float) x, (float) y, (float) w, (float) h).reduced (6.f);
@@ -50,15 +50,15 @@ void PsyLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int w, i
 
     // corpo do knob
     const float body = radius * 0.72f;
-    g.setColour (juce::Colour (0xff1d2238));
+    g.setColour (juce::Colour (0xff13271d));
     g.fillEllipse (centre.x - body, centre.y - body, body * 2.f, body * 2.f);
-    g.setColour (juce::Colour (0xff2e3454));
+    g.setColour (juce::Colour (0xff2a4a3a));
     g.drawEllipse (centre.x - body, centre.y - body, body * 2.f, body * 2.f, 1.f);
 
     // trilho
     juce::Path track;
     track.addCentredArc (centre.x, centre.y, radius, radius, 0.f, startAngle, endAngle, true);
-    g.setColour (juce::Colour (0xff2a2f45));
+    g.setColour (juce::Colour (0xff1d3427));
     g.strokePath (track, juce::PathStrokeType (3.f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 
     // valor
@@ -91,7 +91,7 @@ KnobBox::KnobBox (juce::AudioProcessorValueTreeState& apvts, const juce::String&
     name.setText (title, juce::dontSendNotification);
     name.setJustificationType (juce::Justification::centred);
     name.setFont (makeFont (11.f, true));
-    name.setColour (juce::Label::textColourId, juce::Colour (0xff8b93b8));
+    name.setColour (juce::Label::textColourId, juce::Colour (0xff8fb09e));
     addAndMakeVisible (name);
 
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (apvts, paramId, slider);
@@ -120,7 +120,7 @@ ChoiceBox::ChoiceBox (juce::AudioProcessorValueTreeState& apvts, const juce::Str
     name.setText (title, juce::dontSendNotification);
     name.setJustificationType (juce::Justification::centred);
     name.setFont (makeFont (11.f, true));
-    name.setColour (juce::Label::textColourId, juce::Colour (0xff8b93b8));
+    name.setColour (juce::Label::textColourId, juce::Colour (0xff8fb09e));
     addAndMakeVisible (name);
 
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (apvts, paramId, box);
@@ -134,7 +134,7 @@ void ChoiceBox::resized()
 }
 
 // ================= Editor =================
-PsyBassEditor::PsyBassEditor (PsyBassProcessor& p)
+AncientBassEditor::AncientBassEditor (AncientBassProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
     setLookAndFeel (&lnf);
@@ -180,7 +180,7 @@ PsyBassEditor::PsyBassEditor (PsyBassProcessor& p)
     presetLabel.setText ("PRESET", juce::dontSendNotification);
     presetLabel.setJustificationType (juce::Justification::centred);
     presetLabel.setFont (makeFont (11.f, true));
-    presetLabel.setColour (juce::Label::textColourId, juce::Colour (0xff8b93b8));
+    presetLabel.setColour (juce::Label::textColourId, juce::Colour (0xff8fb09e));
     addAndMakeVisible (presetLabel);
 
     for (int i = 0; i < processor.getNumPrograms(); ++i)
@@ -195,7 +195,7 @@ PsyBassEditor::PsyBassEditor (PsyBassProcessor& p)
     setSize (width, margin * 2 + headerH + 8 + titleH + bodyH + panelPad * 2);
 }
 
-void PsyBassEditor::resized()
+void AncientBassEditor::resized()
 {
     auto area = getLocalBounds().reduced (margin);
     auto header = area.removeFromTop (headerH);
@@ -220,19 +220,19 @@ void PsyBassEditor::resized()
     }
 }
 
-void PsyBassEditor::paint (juce::Graphics& g)
+void AncientBassEditor::paint (juce::Graphics& g)
 {
     g.fillAll (cBg);
 
     // titulo
     juce::AttributedString title;
-    title.append ("PSY", makeFont (32.f, true), juce::Colours::white);
+    title.append ("ANCIENT", makeFont (32.f, true), juce::Colours::white);
     title.append ("BASS", makeFont (32.f, true), cCyan);
     title.draw (g, juce::Rectangle<float> ((float) margin, (float) margin - 2.f, 300.f, 40.f));
 
-    g.setColour (juce::Colour (0xff6b7396));
+    g.setColour (juce::Colour (0xff5f8573));
     g.setFont (makeFont (11.f));
-    g.drawText ("ROLLING BASS ENGINE  -  ESCOLHA UM PRESET, AJUSTE, ROLE",
+    g.drawText ("ANCIENT ROLLING BASS ENGINE  -  PICK A PRESET, TWEAK, ROLL",
                 margin, margin + 40, 520, 16, juce::Justification::left);
 
     // linha de destaque

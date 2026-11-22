@@ -1,11 +1,11 @@
 #pragma once
 #include <JuceHeader.h>
 
-class PsyBassProcessor : public juce::AudioProcessor
+class AncientBassProcessor : public juce::AudioProcessor
 {
 public:
-    PsyBassProcessor();
-    ~PsyBassProcessor() override = default;
+    AncientBassProcessor();
+    ~AncientBassProcessor() override = default;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override {}
@@ -15,7 +15,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "PsyBass"; }
+    const juce::String getName() const override { return "AncientBass"; }
     bool acceptsMidi() const override { return true; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
@@ -55,5 +55,5 @@ private:
     std::atomic<float> *pWave, *pSub, *pOctave, *pCutoff, *pReso, *pSlope, *pEnvAmt,
                        *pDecay, *pRelease, *pWidth, *pDrive, *pGlide, *pAttack, *pVolume, *pRoll;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PsyBassProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AncientBassProcessor)
 };
