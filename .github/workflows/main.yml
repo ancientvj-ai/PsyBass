@@ -1,4 +1,4 @@
-name: Build PsyBass (Windows VST3)
+name: Build AncientBass (Windows VST3)
 
 on:
   push:
@@ -14,10 +14,10 @@ jobs:
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build VST3
-        run: cmake --build build --config Release --target PsyBass_VST3 --parallel
+        run: cmake --build build --config Release --target AncientBass_VST3 --parallel
 
       - name: Upload VST3
         uses: actions/upload-artifact@v4
         with:
-          name: PsyBass-VST3-Windows
-          path: build/PsyBass_artefacts/Release/VST3
+          name: AncientBass-VST3-Windows
+          path: build/AncientBass_artefacts/Release/VST3
